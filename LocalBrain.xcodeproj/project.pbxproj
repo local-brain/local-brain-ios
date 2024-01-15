@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		828ED7172B547A5B00ED9B44 /* DownloadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED7162B547A5B00ED9B44 /* DownloadState.swift */; };
+		828ED71A2B5482C100ED9B44 /* ProgressViewStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED7192B5482C100ED9B44 /* ProgressViewStyle+Extension.swift */; };
+		828ED71C2B5487AF00ED9B44 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED71B2B5487AF00ED9B44 /* Model.swift */; };
 		82E09D1D2B53FB1100A21A08 /* LocalBrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E09D1C2B53FB1100A21A08 /* LocalBrainApp.swift */; };
 		82E09D212B53FB1300A21A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82E09D202B53FB1300A21A08 /* Assets.xcassets */; };
 		82E09D242B53FB1300A21A08 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82E09D232B53FB1300A21A08 /* Preview Assets.xcassets */; };
@@ -14,12 +17,14 @@
 		82E09D2F2B53FB6C00A21A08 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E09D2E2B53FB6C00A21A08 /* ViewModel.swift */; };
 		82E09D322B53FC9900A21A08 /* LibLlama.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E09D312B53FC9900A21A08 /* LibLlama.swift */; };
 		82E09D352B53FCAB00A21A08 /* llama in Frameworks */ = {isa = PBXBuildFile; productRef = 82E09D342B53FCAB00A21A08 /* llama */; };
-		82E09D382B53FD2900A21A08 /* ggml-model-q4_0.bin in Resources */ = {isa = PBXBuildFile; fileRef = 82E09D372B53FD2900A21A08 /* ggml-model-q4_0.bin */; };
 		82E09D3A2B53FDAF00A21A08 /* ChatDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E09D392B53FDAF00A21A08 /* ChatDetail.swift */; };
 		82E09D442B541FA300A21A08 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E09D432B541FA300A21A08 /* Chat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		828ED7162B547A5B00ED9B44 /* DownloadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadState.swift; sourceTree = "<group>"; };
+		828ED7192B5482C100ED9B44 /* ProgressViewStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProgressViewStyle+Extension.swift"; sourceTree = "<group>"; };
+		828ED71B2B5487AF00ED9B44 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		82E09D192B53FB1100A21A08 /* LocalBrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalBrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82E09D1C2B53FB1100A21A08 /* LocalBrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalBrainApp.swift; sourceTree = "<group>"; };
 		82E09D202B53FB1300A21A08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -27,7 +32,6 @@
 		82E09D2B2B53FB4800A21A08 /* ChatList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatList.swift; sourceTree = "<group>"; };
 		82E09D2E2B53FB6C00A21A08 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		82E09D312B53FC9900A21A08 /* LibLlama.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibLlama.swift; sourceTree = "<group>"; };
-		82E09D372B53FD2900A21A08 /* ggml-model-q4_0.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = "ggml-model-q4_0.bin"; sourceTree = "<group>"; };
 		82E09D392B53FDAF00A21A08 /* ChatDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDetail.swift; sourceTree = "<group>"; };
 		82E09D432B541FA300A21A08 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		82E09D452B54337100A21A08 /* LocalBrain.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LocalBrain.entitlements; sourceTree = "<group>"; };
@@ -45,6 +49,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		828ED7182B5482AC00ED9B44 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				828ED7192B5482C100ED9B44 /* ProgressViewStyle+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		82E09D102B53FB1100A21A08 = {
 			isa = PBXGroup;
 			children = (
@@ -64,8 +76,8 @@
 		82E09D1B2B53FB1100A21A08 /* LocalBrain */ = {
 			isa = PBXGroup;
 			children = (
+				828ED7182B5482AC00ED9B44 /* Extensions */,
 				82E09D422B541F9800A21A08 /* Models */,
-				82E09D362B53FD1500A21A08 /* Resources */,
 				82E09D302B53FC9100A21A08 /* Lib */,
 				82E09D2D2B53FB6400A21A08 /* ViewModels */,
 				82E09D2A2B53FB2B00A21A08 /* Views */,
@@ -110,18 +122,12 @@
 			path = Lib;
 			sourceTree = "<group>";
 		};
-		82E09D362B53FD1500A21A08 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				82E09D372B53FD2900A21A08 /* ggml-model-q4_0.bin */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		82E09D422B541F9800A21A08 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				828ED71B2B5487AF00ED9B44 /* Model.swift */,
 				82E09D432B541FA300A21A08 /* Chat.swift */,
+				828ED7162B547A5B00ED9B44 /* DownloadState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -192,7 +198,6 @@
 			files = (
 				82E09D242B53FB1300A21A08 /* Preview Assets.xcassets in Resources */,
 				82E09D212B53FB1300A21A08 /* Assets.xcassets in Resources */,
-				82E09D382B53FD2900A21A08 /* ggml-model-q4_0.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,12 +208,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				828ED71C2B5487AF00ED9B44 /* Model.swift in Sources */,
 				82E09D2F2B53FB6C00A21A08 /* ViewModel.swift in Sources */,
 				82E09D442B541FA300A21A08 /* Chat.swift in Sources */,
 				82E09D2C2B53FB4800A21A08 /* ChatList.swift in Sources */,
 				82E09D1D2B53FB1100A21A08 /* LocalBrainApp.swift in Sources */,
+				828ED7172B547A5B00ED9B44 /* DownloadState.swift in Sources */,
 				82E09D3A2B53FDAF00A21A08 /* ChatDetail.swift in Sources */,
 				82E09D322B53FC9900A21A08 /* LibLlama.swift in Sources */,
+				828ED71A2B5482C100ED9B44 /* ProgressViewStyle+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +275,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -324,7 +332,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -341,7 +349,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LocalBrain/LocalBrain.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"LocalBrain/Preview Content\"";
 				DEVELOPMENT_TEAM = A6GVRYGG7C;
 				ENABLE_PREVIEWS = YES;
@@ -353,7 +361,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -374,7 +382,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LocalBrain/LocalBrain.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"LocalBrain/Preview Content\"";
 				DEVELOPMENT_TEAM = A6GVRYGG7C;
 				ENABLE_PREVIEWS = YES;
@@ -386,7 +394,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

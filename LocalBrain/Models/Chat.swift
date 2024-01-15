@@ -12,15 +12,16 @@ struct Chat: Identifiable, Hashable {
   var name: String
   var responses: [String] = []
   var llamaContext: LlamaContext?
+  var modelFileUrl: URL
   
-  init(id: UUID = UUID(), name: String, responses: [String] = [], llamaContext: LlamaContext? = nil) {
+  init(id: UUID = UUID(), name: String, responses: [String] = [], llamaContext: LlamaContext? = nil, modelFileUrl: URL) {
     self.id = id
     self.name = name
     self.responses = responses
+    self.modelFileUrl = modelFileUrl
     
     do {
-      let url = Bundle.main.url(forResource: "ggml-model-q4_0", withExtension: "bin")!
-      self.llamaContext = try LlamaContext.create_context(path: url.path())
+      self.llamaContext = try LlamaContext.create_context(path: modelFileUrl.path())
     } catch {
       // error
     }

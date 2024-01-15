@@ -11,6 +11,7 @@ struct ChatDetail: View {
   @Binding var chat: Chat
   @State var prompt = ""
   @State var isLoading = false
+  @FocusState private var focusedField: String?
   
   var body: some View {
     VStack {
@@ -26,15 +27,17 @@ struct ChatDetail: View {
           
           if isLoading {
             HStack {
-              ProgressView()
+              CircularLoaderView()
               Spacer()
             }
             .padding(.horizontal, 24)
+            .padding(.vertical, 12)
           }
         }
       }
       
       TextField("what's on your mind ?", text: $prompt)
+        .focused($focusedField, equals: "prompt")
         .disabled(isLoading)
         .opacity(isLoading ? 0.5 : 1)
         .padding()
@@ -51,13 +54,19 @@ struct ChatDetail: View {
           }
         }
     }
+    .onAppear {
+      focusedField = "prompt"
+    }
   }
   
   @MainActor
   func onSubmitPrompt() async {
     chat.name = prompt
     isLoading = true
-    chat.responses.append("\n\n→ \(prompt)\n\n")
+    if !chat.responses.isEmpty {
+      chat.responses.append("\n\n")
+    }
+    chat.responses.append("→ \(prompt)\n\n")
     
     guard let llamaContext = chat.llamaContext else { return }
     
@@ -82,7 +91,8 @@ struct ChatDetail: View {
     ChatDetail(
       chat: .constant(Chat(
         name: "New chat",
-        responses: ["Hello, my name is ultra bot."]
+        responses: ["Hello, my name is ultra bot."],
+        modelFileUrl: URL(fileURLWithPath: "")
       )),
       isLoading:true
     )
