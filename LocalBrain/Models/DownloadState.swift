@@ -6,7 +6,7 @@
 //
 
 enum DownloadState {
-  case empty
+  case notDownloaded
   case downloaded
   case downloading
 }

@@ -17,13 +17,18 @@ class ViewModel: ObservableObject {
     self.models = [
       Model(
         name: "Mistral 7B Instruct v0.2 (4GB)",
-        filename: "ggml-model-mistral7b-q4_0.bin",
+        filename: "mistral-7b-instruct-v0.2.Q4_0.gguf",
         url: URL(string: "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true")!
       ),
       Model(
         name: "Tinyllama 1.1B Chat v1.0 (638MB)",
         filename: "tinyllama-1.1b-chat-v1.0.Q4_0.gguf",
         url: URL(string: "https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_0.gguf?download=true")!
+      ),
+      Model(
+        name: "Openchat 3.5 0106 (4GB)",
+        filename: "openchat-3.5-0106.Q4_0.gguf",
+        url: URL(string: "https://huggingface.co/TheBloke/openchat-3.5-0106-GGUF/resolve/main/openchat-3.5-0106.Q4_0.gguf?download=true")!
       )
     ]
     self.model = models.first!

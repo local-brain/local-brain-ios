@@ -44,12 +44,40 @@ struct ChatList: View {
                 .fontWeight(.medium)
             }
           }
-          .disabled(!viewModel.models.contains(where: { $0.isDownloaded }))
+          .disabled(!viewModel.models.contains(where: { $0.downloadState == .downloaded }))
         }
         
         Section(header: Text("Models")) {
           ForEach(viewModel.sortedModels()) { $model in
-            if model.isDownloaded {
+            switch model.downloadState {
+            case .notDownloaded:
+              Button {
+                Task {
+                  model.downloadState = .downloading
+                  try? await downloadModel(model: model)
+                  model.downloadState = .downloaded
+                }
+              } label: {
+                HStack {
+                  Text(model.name)
+                  Spacer()
+                  Image("icon-download")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                }
+              }
+            case .downloading:
+              Button {
+                
+              } label: {
+                HStack {
+                  Text(model.name)
+                  Spacer()
+                  Text("\(Int(progress * 100))%")
+                    .fontWeight(.medium)
+                }
+              }
+            case .downloaded:
               Menu {
                 Button {
                   onModelSelect(model: model)
@@ -65,65 +93,18 @@ struct ChatList: View {
                 HStack {
                   Text(model.name)
                   Spacer()
-                  if model.id == viewModel.model!.id {
-                    HStack {
-                      Circle()
-                        .frame(width: 8, height: 8)
-                        .foregroundStyle(.green)
-                      
-                      Text("Active")
-                        .foregroundStyle(.secondary)
-                    }
-                  }
-                }
-              }
-            } else {
-              switch model.downloadState {
-              case .empty:
-                Button {
-                  Task {
-                    model.downloadState = .downloading
-                    try? await downloadModel(model: model)
-                    model.downloadState = .downloaded
-                  }
-                } label: {
-                  HStack {
-                    Text(model.name)
-                    Spacer()
-                    Image("icon-download")
-                      .resizable()
-                      .frame(width: 20, height: 20)
-                  }
-                }
-              case .downloading:
-                Button {
                   
-                } label: {
                   HStack {
-                    Text(model.name)
-                    Spacer()
-                    Text("\(Int(progress * 100))%")
-                      .fontWeight(.medium)
-                  }
-                }
-              default:
-                Menu {
-                  Button {
-                    onModelSelect(model: model)
-                  } label: {
-                    Text("Set active")
-                  }
-                  Button {
-                    onDeleteModel(model: &model)
-                  } label: {
-                    Text("Delete")
-                  }
-                } label: {
-                  HStack {
-                    Text(model.name)
-                    Spacer()
-                    Text("Active")
-                      .foregroundStyle(.secondary)
+                    if model.id == viewModel.model?.id {
+                      HStack {
+                        Circle()
+                          .frame(width: 8, height: 8)
+                          .foregroundColor(.green)
+                        
+                        Text("Active")
+                          .foregroundStyle(.secondary)
+                      }
+                    }
                   }
                 }
               }
@@ -140,9 +121,10 @@ struct ChatList: View {
         Task {
           let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(viewModel.model!.filename)
           if !FileManager.default.fileExists(atPath: fileURL.path) {
-            viewModel.model?.downloadState = .downloading
-            try? await downloadModel(model: viewModel.model!)
-            viewModel.model?.downloadState = .downloaded
+            let defaultModel = viewModel.models[0]
+            viewModel.models[0].downloadState = .downloading
+            try? await downloadModel(model: defaultModel)
+            viewModel.models[0].downloadState = .downloaded
           }
         }
 #endif
@@ -161,7 +143,7 @@ struct ChatList: View {
     } catch let error {
       print(error)
     }
-    model.downloadState = .empty
+    model.downloadState = .notDownloaded
   }
   
   @MainActor
@@ -172,8 +154,10 @@ struct ChatList: View {
     navigationPath = [chat.id]
   }
   
-  func downloadModel(model: Model) async throws -> Bool {
+  func downloadModel(model: Model) async throws -> Void {
     do {
+      let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(model.filename)
+      try? FileManager.default.removeItem(atPath: fileURL.path)
       return try await withCheckedThrowingContinuation { continuation in
         let filename = model.filename
         downloadTask = URLSession.shared.downloadTask(with: model.url) { temporaryURL, response, error in
@@ -192,7 +176,8 @@ struct ChatList: View {
             if let temporaryURL = temporaryURL {
               let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
               try FileManager.default.copyItem(at: temporaryURL, to: fileURL)
-              continuation.resume(returning: true)
+              try FileManager.default.removeItem(at: temporaryURL)
+              continuation.resume()
             }
           } catch let err {
             print("Error: \(err.localizedDescription)")
@@ -205,10 +190,9 @@ struct ChatList: View {
         
         downloadTask?.resume()
       }
-    } catch {
-      
+    } catch let error {
+      print(error)
     }
-    return true
   }
 }
 

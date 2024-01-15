@@ -21,6 +21,8 @@ struct ChatDetail: View {
             Text(chat.responses.joined())
               .fontWeight(.medium)
               .padding(.horizontal, 24)
+              .transition(AnyTransition.opacity.animation(.easeInOut(duration:1.0)))
+              .sensoryFeedback(.impact, trigger: chat.responses)
             
             Spacer()
           }

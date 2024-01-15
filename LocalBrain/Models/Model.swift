@@ -12,11 +12,15 @@ struct Model: Identifiable {
   let name: String
   let filename: String
   let url: URL
-  var downloadState: DownloadState = .empty
-  var isDownloaded: Bool {
-    get {
-      let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
-      return FileManager.default.fileExists(atPath: path.path)
-    }
+  var downloadState: DownloadState = .notDownloaded
+  
+  init(name: String, filename: String, url: URL, downloadState: DownloadState? = .notDownloaded) {
+    self.name = name
+    self.filename = filename
+    self.url = url
+    
+    let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
+    let isDownloaded = FileManager.default.fileExists(atPath: path.path)
+    self.downloadState = isDownloaded ? .downloaded : .notDownloaded
   }
 }
