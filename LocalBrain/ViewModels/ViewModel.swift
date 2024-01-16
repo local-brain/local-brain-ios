@@ -8,11 +8,21 @@
 import SwiftUI
 
 class ViewModel: ObservableObject {
+  @Published var isSupported = false
   @Published var chats: [Chat]
   @Published var models: [Model]
   @Published var model: Model?
   
   init() {
+    var systemInfo = utsname()
+    uname(&systemInfo)
+    let modelCode = withUnsafePointer(to: &systemInfo.machine) {
+      $0.withMemoryRebound(to: CChar.self, capacity: 1) {
+        ptr in String.init(validatingUTF8: ptr)
+      }
+    }
+    self.isSupported = ["arm64", "iPhone16,1", "iPhone16,2", "iPad13,4", "iPad13,5", "iPad13,6", "iPad13,7", "iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11", "iPad13,16", "iPad13,17"].contains(modelCode)
+    
     self.chats = []
     self.models = [
       Model(
@@ -37,7 +47,7 @@ class ViewModel: ObservableObject {
   func sortedChats() -> Binding<[Chat]> {
     Binding<[Chat]>(
       get: {
-        self.chats
+        self.chats.reversed()
       },
       set: { chats in
         for chat in chats {

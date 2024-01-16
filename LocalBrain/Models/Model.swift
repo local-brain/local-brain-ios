@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum DownloadState {
+  case notDownloaded
+  case downloaded
+  case downloading
+}
+
 struct Model: Identifiable {
   var id: String { name }
   let name: String

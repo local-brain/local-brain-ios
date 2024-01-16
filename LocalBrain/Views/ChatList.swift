@@ -6,13 +6,10 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct ChatList: View {
   @EnvironmentObject var viewModel: ViewModel
-  @State private var downloadTask: URLSessionDownloadTask?
-  @State private var progress = 0.0
-  @State private var observation: NSKeyValueObservation?
+  @State private var progress = 0
   @State private var navigationPath: [UUID] = []
   
   var body: some View {
@@ -44,19 +41,16 @@ struct ChatList: View {
                 .fontWeight(.medium)
             }
           }
-          .disabled(!viewModel.models.contains(where: { $0.downloadState == .downloaded }))
+          .disabled(!viewModel.models.contains(where: { $0.downloadState == .downloaded }) || !viewModel.isSupported)
         }
         
-        Section(header: Text("Models")) {
+        Section(header: Text("Models"), footer: Text("All models are open source, downloaded from huggingface.co.")) {
           ForEach(viewModel.sortedModels()) { $model in
             switch model.downloadState {
             case .notDownloaded:
               Button {
-                Task {
-                  model.downloadState = .downloading
-                  try? await downloadModel(model: model)
-                  model.downloadState = .downloaded
-                }
+                model.downloadState = .downloading
+                ModelsService.instance.downloadModel(modelUrl: model.url, filename: model.filename)
               } label: {
                 HStack {
                   Text(model.name)
@@ -66,6 +60,8 @@ struct ChatList: View {
                     .frame(width: 20, height: 20)
                 }
               }
+              .disabled(viewModel.models.contains(where: { $0.downloadState == .downloading }))
+              
             case .downloading:
               Button {
                 
@@ -73,8 +69,25 @@ struct ChatList: View {
                 HStack {
                   Text(model.name)
                   Spacer()
-                  Text("\(Int(progress * 100))%")
+                  Text("\(progress)%")
                     .fontWeight(.medium)
+                }
+                .onAppear {
+                  Task {
+                    if let stream = ModelsService.instance.stream {
+                      for await status in stream {
+                        switch status {
+                        case .progress(let percent):
+                          self.progress = percent
+                        case .success:
+                          model.downloadState = .downloaded
+                          onModelSelect(model: model)
+                        case .error:
+                          model.downloadState = .notDownloaded
+                        }
+                      }
+                    }
+                  }
                 }
               }
             case .downloaded:
@@ -92,6 +105,7 @@ struct ChatList: View {
               } label: {
                 HStack {
                   Text(model.name)
+                    .multilineTextAlignment(.leading)
                   Spacer()
                   
                   HStack {
@@ -111,23 +125,29 @@ struct ChatList: View {
             }
           }
         }
+        .disabled(!viewModel.isSupported)
+        
+        if !viewModel.isSupported {
+          Section {
+            Text("This device is not supported. You need at least 8GB of RAM to run AI models locally.")
+              .foregroundStyle(.brown)
+          }
+        }
       }
       .navigationTitle("Chats")
       .navigationDestination(for: UUID.self) { id in
         ChatDetail(chat: viewModel.sortedChats().first(where: { $0.id == id })!)
       }
       .onAppear {
-#if !targetEnvironment(simulator)
+//#if !targetEnvironment(simulator)
         Task {
           let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(viewModel.model!.filename)
-          if !FileManager.default.fileExists(atPath: fileURL.path) {
-            let defaultModel = viewModel.models[0]
+          if !FileManager.default.fileExists(atPath: fileURL.path) && viewModel.isSupported && !viewModel.models.contains(where: { $0.downloadState == .downloading }) {
             viewModel.models[0].downloadState = .downloading
-            try? await downloadModel(model: defaultModel)
-            viewModel.models[0].downloadState = .downloaded
+            ModelsService.instance.downloadModel(modelUrl: viewModel.models[0].url, filename: viewModel.models[0].filename)
           }
         }
-#endif
+//#endif
       }
     }
   }
@@ -152,47 +172,6 @@ struct ChatList: View {
     let chat = Chat(name: "New chat", modelFileUrl: fileURL)
     viewModel.chats.append(chat)
     navigationPath = [chat.id]
-  }
-  
-  func downloadModel(model: Model) async throws -> Void {
-    do {
-      let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(model.filename)
-      try? FileManager.default.removeItem(atPath: fileURL.path)
-      return try await withCheckedThrowingContinuation { continuation in
-        let filename = model.filename
-        downloadTask = URLSession.shared.downloadTask(with: model.url) { temporaryURL, response, error in
-          if let error = error {
-            print("Error: \(error.localizedDescription)")
-            continuation.resume(throwing: error)
-          }
-          
-          guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-            print("Server error!")
-            continuation.resume(throwing: "" as! Error)
-            return
-          }
-          
-          do {
-            if let temporaryURL = temporaryURL {
-              let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
-              try FileManager.default.copyItem(at: temporaryURL, to: fileURL)
-              try FileManager.default.removeItem(at: temporaryURL)
-              continuation.resume()
-            }
-          } catch let err {
-            print("Error: \(err.localizedDescription)")
-          }
-        }
-        
-        observation = downloadTask?.progress.observe(\.fractionCompleted) { progress, _ in
-          self.progress = progress.fractionCompleted
-        }
-        
-        downloadTask?.resume()
-      }
-    } catch let error {
-      print(error)
-    }
   }
 }
 

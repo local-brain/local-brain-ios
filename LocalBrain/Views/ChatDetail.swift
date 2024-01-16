@@ -14,26 +14,22 @@ struct ChatDetail: View {
   @FocusState private var focusedField: String?
   
   var body: some View {
-    VStack {
+    VStack(spacing: 0) {
       ScrollView {
-        VStack {
+        VStack(alignment: .leading) {
           HStack {
-            Text(chat.responses.joined())
-              .fontWeight(.medium)
-              .padding(.horizontal, 24)
-              .transition(AnyTransition.opacity.animation(.easeInOut(duration:1.0)))
-              .sensoryFeedback(.impact, trigger: chat.responses)
+            Text(chat.markdown)
             
             Spacer()
           }
+          .padding(.horizontal, 24)
+          .sensoryFeedback(.impact, trigger: chat.responses)
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration:0.3)))
           
           if isLoading {
-            HStack {
-              CircularLoaderView()
-              Spacer()
-            }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 12)
+            CircularLoaderView()
+              .padding(.horizontal, 24)
+              .padding(.vertical, 12)
           }
         }
       }
@@ -68,7 +64,7 @@ struct ChatDetail: View {
     if !chat.responses.isEmpty {
       chat.responses.append("\n\n")
     }
-    chat.responses.append("→ \(prompt)\n\n")
+    chat.responses.append("**→ \(prompt.trimmingCharacters(in: .whitespaces))** \n\n")
     
     guard let llamaContext = chat.llamaContext else { return }
     
@@ -79,7 +75,7 @@ struct ChatDetail: View {
         
         while await llamaContext.n_cur < llamaContext.n_len {
           let result = await llamaContext.completion_loop()
-          chat.responses.append(result)
+          chat.responses.append("\(result)")
         }
       }
     }
@@ -93,7 +89,12 @@ struct ChatDetail: View {
     ChatDetail(
       chat: .constant(Chat(
         name: "New chat",
-        responses: ["Hello, my name is ultra bot."],
+        responses: [
+          "**→ What is the best gfx ?** \n\n",
+          "Hello, my name is ultra bot.",
+          "I wnat to be multiline text to demo this.",
+          "\n\nWhat is the best gfx ?",
+        ],
         modelFileUrl: URL(fileURLWithPath: "")
       )),
       isLoading:true

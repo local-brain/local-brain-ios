@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Chat: Identifiable, Hashable {
   var id = UUID()
@@ -13,6 +14,11 @@ struct Chat: Identifiable, Hashable {
   var responses: [String] = []
   var llamaContext: LlamaContext?
   var modelFileUrl: URL
+  var markdown: LocalizedStringKey {
+    get {
+      return LocalizedStringKey(stringLiteral: self.responses.joined())
+    }
+  }
   
   init(id: UUID = UUID(), name: String, responses: [String] = [], llamaContext: LlamaContext? = nil, modelFileUrl: URL) {
     self.id = id

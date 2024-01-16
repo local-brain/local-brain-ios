@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		828ED7172B547A5B00ED9B44 /* DownloadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED7162B547A5B00ED9B44 /* DownloadState.swift */; };
-		828ED71A2B5482C100ED9B44 /* ProgressViewStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED7192B5482C100ED9B44 /* ProgressViewStyle+Extension.swift */; };
+		823FC1252B5678CE00810658 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823FC1242B5678CE00810658 /* Error.swift */; };
+		823FC1282B5679E700810658 /* ModelsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823FC1272B5679E700810658 /* ModelsService.swift */; };
+		828ED71A2B5482C100ED9B44 /* CircularLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED7192B5482C100ED9B44 /* CircularLoaderView.swift */; };
 		828ED71C2B5487AF00ED9B44 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828ED71B2B5487AF00ED9B44 /* Model.swift */; };
 		82E09D1D2B53FB1100A21A08 /* LocalBrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E09D1C2B53FB1100A21A08 /* LocalBrainApp.swift */; };
 		82E09D212B53FB1300A21A08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82E09D202B53FB1300A21A08 /* Assets.xcassets */; };
@@ -22,8 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		828ED7162B547A5B00ED9B44 /* DownloadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadState.swift; sourceTree = "<group>"; };
-		828ED7192B5482C100ED9B44 /* ProgressViewStyle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProgressViewStyle+Extension.swift"; sourceTree = "<group>"; };
+		823FC1242B5678CE00810658 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		823FC1272B5679E700810658 /* ModelsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsService.swift; sourceTree = "<group>"; };
+		828ED7192B5482C100ED9B44 /* CircularLoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularLoaderView.swift; sourceTree = "<group>"; };
 		828ED71B2B5487AF00ED9B44 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		82E09D192B53FB1100A21A08 /* LocalBrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalBrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82E09D1C2B53FB1100A21A08 /* LocalBrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalBrainApp.swift; sourceTree = "<group>"; };
@@ -49,12 +51,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		828ED7182B5482AC00ED9B44 /* Extensions */ = {
+		823FC1262B5679CC00810658 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				828ED7192B5482C100ED9B44 /* ProgressViewStyle+Extension.swift */,
+				823FC1272B5679E700810658 /* ModelsService.swift */,
 			);
-			path = Extensions;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		823FC1292B567B1D00810658 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				828ED7192B5482C100ED9B44 /* CircularLoaderView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		82E09D102B53FB1100A21A08 = {
@@ -76,7 +86,8 @@
 		82E09D1B2B53FB1100A21A08 /* LocalBrain */ = {
 			isa = PBXGroup;
 			children = (
-				828ED7182B5482AC00ED9B44 /* Extensions */,
+				823FC1292B567B1D00810658 /* Components */,
+				823FC1262B5679CC00810658 /* Services */,
 				82E09D422B541F9800A21A08 /* Models */,
 				82E09D302B53FC9100A21A08 /* Lib */,
 				82E09D2D2B53FB6400A21A08 /* ViewModels */,
@@ -127,7 +138,7 @@
 			children = (
 				828ED71B2B5487AF00ED9B44 /* Model.swift */,
 				82E09D432B541FA300A21A08 /* Chat.swift */,
-				828ED7162B547A5B00ED9B44 /* DownloadState.swift */,
+				823FC1242B5678CE00810658 /* Error.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -213,10 +224,11 @@
 				82E09D442B541FA300A21A08 /* Chat.swift in Sources */,
 				82E09D2C2B53FB4800A21A08 /* ChatList.swift in Sources */,
 				82E09D1D2B53FB1100A21A08 /* LocalBrainApp.swift in Sources */,
-				828ED7172B547A5B00ED9B44 /* DownloadState.swift in Sources */,
 				82E09D3A2B53FDAF00A21A08 /* ChatDetail.swift in Sources */,
 				82E09D322B53FC9900A21A08 /* LibLlama.swift in Sources */,
-				828ED71A2B5482C100ED9B44 /* ProgressViewStyle+Extension.swift in Sources */,
+				823FC1282B5679E700810658 /* ModelsService.swift in Sources */,
+				823FC1252B5678CE00810658 /* Error.swift in Sources */,
+				828ED71A2B5482C100ED9B44 /* CircularLoaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,7 +361,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LocalBrain/LocalBrain.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"LocalBrain/Preview Content\"";
 				DEVELOPMENT_TEAM = A6GVRYGG7C;
 				ENABLE_PREVIEWS = YES;
@@ -382,7 +394,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LocalBrain/LocalBrain.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"LocalBrain/Preview Content\"";
 				DEVELOPMENT_TEAM = A6GVRYGG7C;
 				ENABLE_PREVIEWS = YES;
