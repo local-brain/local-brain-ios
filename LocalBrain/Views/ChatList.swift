@@ -41,7 +41,7 @@ struct ChatList: View {
                 .fontWeight(.medium)
             }
           }
-          .disabled(!viewModel.models.contains(where: { $0.downloadState == .downloaded }) || !viewModel.isSupported)
+          .disabled(!viewModel.models.contains(where: { $0.downloadState == .downloaded }))
         }
         
         Section(header: Text("Models"), footer: Text("All models are open source, downloaded from huggingface.co.")) {
@@ -125,14 +125,6 @@ struct ChatList: View {
             }
           }
         }
-        .disabled(!viewModel.isSupported)
-        
-        if !viewModel.isSupported {
-          Section {
-            Text("This device is not supported. You need at least 8GB of RAM to run AI models locally.")
-              .foregroundStyle(.brown)
-          }
-        }
       }
       .navigationTitle("Chats")
       .navigationDestination(for: UUID.self) { id in
@@ -142,7 +134,7 @@ struct ChatList: View {
 //#if !targetEnvironment(simulator)
         Task {
           let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(viewModel.model!.filename)
-          if !FileManager.default.fileExists(atPath: fileURL.path) && viewModel.isSupported && !viewModel.models.contains(where: { $0.downloadState == .downloading }) {
+          if !FileManager.default.fileExists(atPath: fileURL.path) && !viewModel.models.contains(where: { $0.downloadState == .downloading }) {
             viewModel.models[0].downloadState = .downloading
             ModelsService.instance.downloadModel(modelUrl: viewModel.models[0].url, filename: viewModel.models[0].filename)
           }
