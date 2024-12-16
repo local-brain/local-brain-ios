@@ -12,5 +12,5 @@ struct ChatModel: Equatable, Identifiable {
   var text = ""
   let model: ModelModel
   var title = ""
-  var llamaContext: LlamaContext?
+  let llamaContext: LlamaContext
 }

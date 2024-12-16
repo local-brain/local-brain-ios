@@ -8,7 +8,7 @@
 import Foundation
 
 struct ModelModel: Equatable, Identifiable {
-  let id: UUID
+  var id: String { filename }
   let name: String
   let url: URL
   let filename: String

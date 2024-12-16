@@ -19,7 +19,7 @@ struct ModelItem {
   
   @ObservableState
   struct State: Equatable, Identifiable {
-    var id: UUID { model.id }
+    var id: String { model.id }
     let model: ModelModel
     var downloadProgress = 0
     var downloadState: DownloadState = .notDownloaded
@@ -37,8 +37,8 @@ struct ModelItem {
     case download
     case onProgressChange(Int)
     case didDownload(Result<Int, Error>)
-    case delete(UUID)
-    case setActive(UUID)
+    case delete(String)
+    case setActive(String)
     case cancel
   }
   

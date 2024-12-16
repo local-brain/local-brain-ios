@@ -12,10 +12,10 @@ class Mocks {
     id: UUID(),
     text: "**What's 2 + 2?**\nUpdated chat template to fix small bug with tool usage being undefined, if you don't use the built-in chat template it shouldn't change anything",
     model: modelModel,
-    title: "What's 2 + 2?"
+    title: "What's 2 + 2?",
+    llamaContext: try! LlamaContext.create_context(path: "")
   )
   static let modelModel = ModelModel(
-    id: UUID(),
     name: "Mistral 7B",
     url: URL(string: "https://url.com")!,
     filename: "filename",

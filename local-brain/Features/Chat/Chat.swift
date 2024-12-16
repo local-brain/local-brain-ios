@@ -24,9 +24,7 @@ struct Chat {
   }
   
   enum Action: Sendable {
-    case createContext
     case setTitle(String)
-    case didCreateContext(LlamaContext?)
     case initialize
     case onPromptChange(String)
     case onSubmit
@@ -41,28 +39,11 @@ struct Chat {
     Reduce { state, action in
       switch action {
       case .initialize:
-        return .merge(
-          .run { send in
-            await send(.setFocusedField(.prompt))
-          },
-          .run { send in
-            await send(.createContext)
-          }
-        )
+        return .run { send in
+          await send(.setFocusedField(.prompt))
+        }
         
       case .cleanup:
-        return .none
-        
-      case .createContext:
-        if state.chat.llamaContext == nil {
-          state.chat.llamaContext = try? LlamaContext.create_context(path: state.chat.model.path.path)
-          return .run { [context = state.chat.llamaContext] send in
-            await send(.didCreateContext(context))
-          }
-        }
-        return .none
-        
-      case .didCreateContext:
         return .none
         
       case .setFocusedField(let field):
@@ -79,9 +60,7 @@ struct Chat {
         
       case .onSubmit:
         state.isLoading = true
-        guard let llamaContext = state.chat.llamaContext else { return .none }
-        
-        return .run { [llamaContext = llamaContext, prompt = state.prompt, model = state.chat.model] send in
+        return .run { [llamaContext = state.chat.llamaContext, prompt = state.prompt, model = state.chat.model] send in
           await send(.setTitle(prompt))
           await send(.onResponse("\n\n**\(prompt.trimmingCharacters(in: .whitespacesAndNewlines))**\n\n"))
           let fullPrompt = model.format.replacingOccurrences(of: "{prompt}", with: prompt)
@@ -111,7 +90,7 @@ struct Chat {
         state.isLoading = false
         state.prompt = ""
         return .run { [llamaContext = state.chat.llamaContext] send in
-          await llamaContext?.cancel()
+          await llamaContext.cancel()
         }
       }
     }

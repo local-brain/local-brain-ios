@@ -17,13 +17,9 @@ struct Chats {
   
   @ObservableState
   struct State: Equatable {
-    var isDownloading: Bool {
-      models.contains(where: { $0.downloadState == .downloading })
-    }
     var chats: IdentifiedArrayOf<Chat.State> = []
     var models: IdentifiedArrayOf<ModelItem.State> = [
       ModelItem.State(model: ModelModel(
-        id: UUID(),
         name: "Meta Llama 3.1 8B",
         url: URL(string:  "https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main/Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf?download=true")!,
         filename: "Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf",
@@ -34,7 +30,6 @@ struct Chats {
         size: "5GB"
       )),
       ModelItem.State(model: ModelModel(
-        id: UUID(),
         name: "Meta Llama 3.2 3B",
         url: URL(string:  "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_0.gguf?download=true")!,
         filename: "Llama-3.2-3B-Instruct-Q4_0.gguf",
@@ -45,7 +40,6 @@ struct Chats {
         size: "2GB"
       )),
       ModelItem.State(model: ModelModel(
-        id: UUID(),
         name: "Qwen 2.5.1 7B",
         url: URL(string:  "https://huggingface.co/bartowski/Qwen2.5.1-Coder-7B-Instruct-GGUF/resolve/main/Qwen2.5.1-Coder-7B-Instruct-Q4_0.gguf?download=true")!,
         filename: "Qwen2.5.1-Coder-7B-Instruct-Q4_0.gguf",
@@ -59,7 +53,6 @@ struct Chats {
         size: "4GB"
       )),
       ModelItem.State(model: ModelModel(
-        id: UUID(),
         name: "Ministral 8B",
         url: URL(string:  "https://huggingface.co/bartowski/Ministral-8B-Instruct-2410-GGUF/resolve/main/Ministral-8B-Instruct-2410-Q4_0.gguf?download=true")!,
         filename: "Ministral-8B-Instruct-2410-Q4_0.gguf",
@@ -67,7 +60,7 @@ struct Chats {
         size: "5GB"
       ))
     ]
-    var activeId: UUID?
+    var activeId: String?
     
     // Sub states
     var path = StackState<Path.State>()
@@ -87,7 +80,12 @@ struct Chats {
     Reduce { state, action in
       switch action {
       case .initialize:
-        state.activeId = state.models.first(where: { $0.downloadState == .downloaded })?.id
+        if let activeId = UserDefaults.standard.string(forKey: "activeId") {
+          state.activeId = activeId
+        } else {
+          state.activeId = state.models.first(where: { $0.downloadState == .downloaded })?.id
+        }
+
         if state.models.first(where: { $0.downloadState == .downloaded }) == nil {
           return .run { [models = state.models] send in
             if let uuid = models.first?.id {
@@ -101,7 +99,8 @@ struct Chats {
         if let activeModel = state.models.first(where: { $0.id == state.activeId }) {
           let chatState = Chat.State(chat: ChatModel(
             id: UUID(),
-            model: activeModel.model
+            model: activeModel.model,
+            llamaContext: try! LlamaContext.create_context(path: activeModel.model.path.path)
           ))
           state.chats.append(chatState)
           state.path.append(.chat(chatState))
@@ -115,13 +114,6 @@ struct Chats {
       case .path(.element(_, action: .chat(.setTitle(let title)))):
         if let idx = state.path.first?.chat?.id {
           state.chats[id: idx]?.chat.title = title
-        }
-        return .none
-        
-      case .path(.element(_, action: .chat(.didCreateContext(let context)))):
-        if let idx = state.path.first?.chat?.id,
-          state.chats[id: idx]?.chat.llamaContext == nil {
-          state.chats[id: idx]?.chat.llamaContext = context
         }
         return .none
         
@@ -145,6 +137,7 @@ struct Chats {
         
       case .models(.element(_, action: .setActive(let uuid))):
         state.activeId = uuid
+        UserDefaults.standard.set(uuid, forKey: "activeId")
         return .none
         
       case .models:

@@ -124,6 +124,7 @@ actor LlamaContext: Equatable {
     }
 
     func completion_init(text: String) {
+        is_done = false
         n_len = 1024
         print("attempting to complete \"\(text)\"")
 
