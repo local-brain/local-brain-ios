@@ -20,14 +20,14 @@ struct Chats {
     var chats: IdentifiedArrayOf<Chat.State> = []
     var models: IdentifiedArrayOf<ModelItem.State> = [
       ModelItem.State(model: ModelModel(
-        name: "Meta Llama 3.1 8B",
-        url: URL(string:  "https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main/Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf?download=true")!,
-        filename: "Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf",
+        name: "Meta Llama 3.2 1B",
+        url: URL(string:  "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_0.gguf?download=true")!,
+        filename: "Llama-3.2-1B-Instruct-Q4_0.gguf",
         format: """
         <|start_header_id|>user<|end_header_id|>
           {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
         """,
-        size: "5GB"
+        size: "700MB"
       )),
       ModelItem.State(model: ModelModel(
         name: "Meta Llama 3.2 3B",
@@ -38,6 +38,16 @@ struct Chats {
           {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
         """,
         size: "2GB"
+      )),
+      ModelItem.State(model: ModelModel(
+        name: "Meta Llama 3.1 8B",
+        url: URL(string:  "https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main/Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf?download=true")!,
+        filename: "Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf",
+        format: """
+        <|start_header_id|>user<|end_header_id|>
+          {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+        """,
+        size: "5GB"
       )),
       ModelItem.State(model: ModelModel(
         name: "Qwen 2.5.1 7B",

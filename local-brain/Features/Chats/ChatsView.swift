@@ -51,7 +51,7 @@ struct ChatsView: View {
           .disabled(store.activeId == nil)
         }
         
-        Section(header: Text("Models"), footer: Text("All models are open source, downloaded from huggingface.co.")) {
+        Section(header: Text("Models"), footer: Text("All models are open source, downloaded from huggingface.co. If app crashes on your device try selecting a smaller model.")) {
           ForEach(store
             .scope(state: \.models, action: \.models)) { modelStore in
               HStack {
