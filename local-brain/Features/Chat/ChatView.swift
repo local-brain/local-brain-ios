@@ -21,9 +21,10 @@ struct ChatView: View {
             
             Spacer()
           }
-          .padding(.horizontal, 24)
+          .padding(.horizontal)
           .sensoryFeedback(.impact, trigger: store.chat.text)
-          .transition(AnyTransition.opacity.animation(.easeInOut(duration:0.3)))
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.3))
+          )
           
           if store.isLoading {
             ProgressView()
@@ -65,7 +66,7 @@ struct ChatView: View {
       .bind($store.focusedField.sending(\.setFocusedField), to: $focusedField)
       .background(.colorBackgroundPrimary)
       .clipShape(RoundedRectangle(cornerRadius: 13))
-      .padding(24)
+      .padding()
       .padding(.top, 8)
     }
     .navigationTitle(store.chat.title)

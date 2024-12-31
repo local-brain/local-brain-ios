@@ -15,6 +15,7 @@ struct ModelItem {
     case notDownloaded
     case downloaded
     case downloading
+    case notSupported
   }
   
   @ObservableState
@@ -30,6 +31,9 @@ struct ModelItem {
       self.downloadProgress = downloadProgress
       let fileExist = FileManager.default.fileExists(atPath: model.path.path)
       self.downloadState = fileExist ? .downloaded : downloadState
+      if ProcessInfo().physicalMemory / 1024 / 1024 / 1024 < model.memoryRequired {
+        self.downloadState = .notSupported
+      }
     }
   }
   

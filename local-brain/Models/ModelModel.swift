@@ -14,6 +14,7 @@ struct ModelModel: Equatable, Identifiable {
   let filename: String
   let format: String
   let size: String
+  let memoryRequired: Int
   var path: URL {
     FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
   }

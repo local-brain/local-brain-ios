@@ -39,6 +39,9 @@ struct ModelItemView: View {
         } label: {
           Label("Delete", systemImage: "trash")
         }
+        
+      case .notSupported:
+        EmptyView()
       }
       
     } label: {
@@ -63,6 +66,11 @@ struct ModelItemView: View {
           
         case .downloaded:
           EmptyView()
+          
+        case .notSupported:
+          Text("Device not supported")
+            .foregroundStyle(.secondary)
+            .font(.caption)
         }
       }
     }

@@ -11,6 +11,7 @@ import Foundation
 @Reducer
 struct Chats {
   @Reducer(state: .equatable)
+  
   enum Path {
     case chat(Chat)
   }
@@ -27,7 +28,16 @@ struct Chats {
         <|start_header_id|>user<|end_header_id|>
           {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
         """,
-        size: "700MB"
+        size: "700MB",
+        memoryRequired: 3
+      )),
+      ModelItem.State(model: ModelModel(
+        name: "Google Gemma 2 2B",
+        url: URL(string:  "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_S.gguf?download=true")!,
+        filename: "gemma-2-2b-it-Q4_K_S.gguf",
+        format: "{prompt}",
+        size: "2GB",
+        memoryRequired: 3
       )),
       ModelItem.State(model: ModelModel(
         name: "Meta Llama 3.2 3B",
@@ -37,7 +47,8 @@ struct Chats {
         <|start_header_id|>user<|end_header_id|>
           {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
         """,
-        size: "2GB"
+        size: "2GB",
+        memoryRequired: 3
       )),
       ModelItem.State(model: ModelModel(
         name: "Meta Llama 3.1 8B",
@@ -47,7 +58,8 @@ struct Chats {
         <|start_header_id|>user<|end_header_id|>
           {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
         """,
-        size: "5GB"
+        size: "5GB",
+        memoryRequired: 7
       )),
       ModelItem.State(model: ModelModel(
         name: "Qwen 2.5.1 7B",
@@ -60,16 +72,19 @@ struct Chats {
           {prompt}<|im_end|>
           <|im_start|>assistant
         """,
-        size: "4GB"
+        size: "4GB",
+        memoryRequired: 7
       )),
       ModelItem.State(model: ModelModel(
         name: "Ministral 8B",
         url: URL(string:  "https://huggingface.co/bartowski/Ministral-8B-Instruct-2410-GGUF/resolve/main/Ministral-8B-Instruct-2410-Q4_0.gguf?download=true")!,
         filename: "Ministral-8B-Instruct-2410-Q4_0.gguf",
         format: "<s>[INST]{prompt}[/INST]",
-        size: "5GB"
+        size: "5GB",
+        memoryRequired: 7
       ))
     ]
+    
     var activeId: String?
     
     // Sub states
@@ -94,14 +109,6 @@ struct Chats {
           state.activeId = activeId
         } else {
           state.activeId = state.models.first(where: { $0.downloadState == .downloaded })?.id
-        }
-
-        if state.models.first(where: { $0.downloadState == .downloaded }) == nil {
-          return .run { [models = state.models] send in
-            if let uuid = models.first?.id {
-              await send(.models(.element(id: uuid, action: .download)))
-            }
-          }
         }
         return .none
         

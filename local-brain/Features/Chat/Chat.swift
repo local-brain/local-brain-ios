@@ -64,15 +64,15 @@ struct Chat {
           await send(.setTitle(prompt))
           await send(.onResponse("\n\n**\(prompt.trimmingCharacters(in: .whitespacesAndNewlines))**\n\n"))
           let fullPrompt = model.format.replacingOccurrences(of: "{prompt}", with: prompt)
-          await llamaContext.completion_init(text: fullPrompt)
+          await llamaContext?.completion_init(text: fullPrompt)
           
-          while await llamaContext.n_cur < llamaContext.n_len {
-            if await llamaContext.is_done {
+          while await llamaContext?.n_cur ?? 0 < llamaContext?.n_len ?? 0 {
+            if ((await llamaContext?.is_done) != nil) {
               await send(.cancelInference)
               return
             }
-            let result = await llamaContext.completion_loop()
-            await send(.onResponse(result))
+            let result = await llamaContext?.completion_loop()
+            await send(.onResponse(result ?? ""))
           }
           await send(.onResponseEnd)
         }
@@ -90,7 +90,7 @@ struct Chat {
         state.isLoading = false
         state.prompt = ""
         return .run { [llamaContext = state.chat.llamaContext] send in
-          await llamaContext.cancel()
+          await llamaContext?.cancel()
         }
       }
     }
