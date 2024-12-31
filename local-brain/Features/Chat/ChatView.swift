@@ -28,7 +28,7 @@ struct ChatView: View {
           
           if store.isLoading {
             ProgressView()
-              .padding(.horizontal, 24)
+              .padding(.horizontal)
               .padding(.vertical, 12)
           }
         }
@@ -82,7 +82,8 @@ struct ChatView: View {
 
 #Preview {
   ChatView(store: Store(initialState: Chat.State(
-    chat: Mocks.chatModel
+    chat: Mocks.chatModel,
+    isLoading: true
   )) {
     Chat()
   })
