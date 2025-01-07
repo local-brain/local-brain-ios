@@ -18,6 +18,7 @@ struct ChatView: View {
         VStack(alignment: .leading) {
           HStack {
             Text(LocalizedStringKey(store.chat.text.trimModelAdditions()))
+              .textSelection(.enabled)
             
             Spacer()
           }

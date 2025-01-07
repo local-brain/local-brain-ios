@@ -40,6 +40,14 @@ struct Chats {
         memoryRequired: 3
       )),
       ModelItem.State(model: ModelModel(
+        name: "Microsoft Phi 3.5 Mini",
+        url: URL(string:  "https://huggingface.co/bartowski/Phi-3.5-mini-instruct-GGUF/resolve/main/Phi-3.5-mini-instruct-Q4_0.gguf?download=true")!,
+        filename: "Phi-3.5-mini-instruct-Q4_0.gguf",
+        format: "{prompt}",
+        size: "2GB",
+        memoryRequired: 3
+      )),
+      ModelItem.State(model: ModelModel(
         name: "Meta Llama 3.2 3B",
         url: URL(string:  "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_0.gguf?download=true")!,
         filename: "Llama-3.2-3B-Instruct-Q4_0.gguf",
