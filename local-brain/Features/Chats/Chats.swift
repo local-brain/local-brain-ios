@@ -24,10 +24,7 @@ struct Chats {
         name: "Meta Llama 3.2 1B",
         url: URL(string:  "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_0.gguf?download=true")!,
         filename: "Llama-3.2-1B-Instruct-Q4_0.gguf",
-        format: """
-        <|start_header_id|>user<|end_header_id|>
-          {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-        """,
+        format: "{prompt}",
         size: "700MB",
         memoryRequired: 3
       )),
@@ -51,10 +48,7 @@ struct Chats {
         name: "Meta Llama 3.2 3B",
         url: URL(string:  "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_0.gguf?download=true")!,
         filename: "Llama-3.2-3B-Instruct-Q4_0.gguf",
-        format: """
-        <|start_header_id|>user<|end_header_id|>
-          {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-        """,
+        format: "{prompt}",
         size: "2GB",
         memoryRequired: 3
       )),
@@ -62,10 +56,7 @@ struct Chats {
         name: "Meta Llama 3.1 8B",
         url: URL(string:  "https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/resolve/main/Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf?download=true")!,
         filename: "Meta-Llama-3.1-8B-Instruct-Q4_K_S.gguf",
-        format: """
-        <|start_header_id|>user<|end_header_id|>
-          {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
-        """,
+        format: "{prompt}",
         size: "5GB",
         memoryRequired: 7
       )),
@@ -73,13 +64,7 @@ struct Chats {
         name: "Qwen 2.5.1 7B",
         url: URL(string:  "https://huggingface.co/bartowski/Qwen2.5.1-Coder-7B-Instruct-GGUF/resolve/main/Qwen2.5.1-Coder-7B-Instruct-Q4_0.gguf?download=true")!,
         filename: "Qwen2.5.1-Coder-7B-Instruct-Q4_0.gguf",
-        format: """
-          <|im_start|>system
-          You are a helpful assistant that answer questions and provide valuable informations.<|im_end|>
-          <|im_start|>user
-          {prompt}<|im_end|>
-          <|im_start|>assistant
-        """,
+        format: "{prompt}",
         size: "4GB",
         memoryRequired: 7
       )),
@@ -87,7 +72,7 @@ struct Chats {
         name: "Ministral 8B",
         url: URL(string:  "https://huggingface.co/bartowski/Ministral-8B-Instruct-2410-GGUF/resolve/main/Ministral-8B-Instruct-2410-Q4_0.gguf?download=true")!,
         filename: "Ministral-8B-Instruct-2410-Q4_0.gguf",
-        format: "<s>[INST]{prompt}[/INST]",
+        format: "{prompt}",
         size: "5GB",
         memoryRequired: 7
       ))
